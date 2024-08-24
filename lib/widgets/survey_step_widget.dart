@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_survey_flow/enums/survey_step_type.dart';
 import 'package:flutter_survey_flow/models/survey_step.dart';
 import 'package:flutter_survey_flow/providers/survey_provider.dart';
@@ -77,7 +78,24 @@ class SurveyStepWidget extends StatelessWidget {
               },
             ),
           ),
-        ],
+        ]
+            .animate(interval: 100.milliseconds) // Staggered start
+            .fadeIn(
+              duration: 500.milliseconds,
+              curve: Curves.easeInOut,
+            )
+            .slideY(
+              duration: 500.milliseconds,
+              curve: Curves.easeInOut,
+              begin: 0.2,
+              end: 0.0,
+            )
+            .scale(
+              duration: 500.milliseconds,
+              curve: Curves.easeInOut,
+              begin: const Offset(0.95, 0.95),
+              end: const Offset(1.0, 1.0),
+            ),
       ),
     );
   }

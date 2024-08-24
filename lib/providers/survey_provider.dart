@@ -12,7 +12,7 @@ class SurveyConfiguration {
   final bool enableSwipeNavigation;
 
   const SurveyConfiguration({
-    this.autoPassToNextStep = true,
+    this.autoPassToNextStep = false,
     this.autoPassToNextStepDelay = const Duration(milliseconds: 600),
     this.enableSwipeNavigation = false,
   });
