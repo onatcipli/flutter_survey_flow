@@ -18,7 +18,7 @@ class SurveyHeader extends StatelessWidget {
             },
             icon: surveyProvider.isFirstStep
                 ? const Icon(Icons.close)
-                : const Icon(Icons.arrow_back_ios),
+                : const Icon(Icons.arrow_back),
           ),
         ),
         Expanded(

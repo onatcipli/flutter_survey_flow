@@ -23,6 +23,7 @@ class MultipleChoiceSingleSelectWidget extends StatelessWidget {
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         ...?step.options?.map((option) {
           final isSelected = selectedOption == option;
@@ -33,11 +34,13 @@ class MultipleChoiceSingleSelectWidget extends StatelessWidget {
               ? Theme.of(context).colorScheme.onPrimary
               : Theme.of(context).colorScheme.onBackground;
           return Card(
+            margin: const EdgeInsets.only(bottom: 10),
             elevation: 0,
             color: backgroundColor,
             child: ListTile(
               title: Text(
                 option.title,
+                textAlign: option.textAlign,
                 style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                       color: textColor,
                     ),

@@ -8,7 +8,7 @@ class SurveyStep {
   final String title;
   final String? description;
   final SurveyStepType stepType;
-  final List<SurveyOption>? options; // For multiple choice questions
+  List<SurveyOption>? options; // For multiple choice questions
   dynamic answer; // Generic answer type for storing user input
   final bool isRequired;
 
@@ -24,4 +24,61 @@ class SurveyStep {
           stepType != SurveyStepType.multipleChoiceSingleSelect || (options != null && options.length >= 2),
           'Multiple choice questions must have at least two options.',
         );
+
+  /// Constructor for creating a multiple choice single select survey step.
+  ///
+  /// Parameters:
+  /// * id: The unique identifier for the step.
+  /// * title: The display title for the step.
+  /// * description: An optional description for the step.
+  /// * options: A list of SurveyOption objects representing the choices.
+  /// * isRequired: A boolean indicating if the step is required.
+  SurveyStep.multipleChoiceSingleSelect({
+    required this.id,
+    required this.title,
+    this.description,
+    required List<SurveyOption> this.options,
+    this.answer,
+    this.isRequired = false,
+  })  : stepType = SurveyStepType.multipleChoiceSingleSelect,
+        assert(options.length >= 2, 'Multiple choice questions must have at least two options.');
+
+  /// Constructor for creating a multiple choice multi select survey step.
+  ///
+  /// Parameters:
+  /// * id: The unique identifier for the step.
+  /// * title: The display title for the step.
+  /// * description: An optional description for the step.
+  /// * options: A list of SurveyOption objects representing the choices.
+  /// * isRequired: A boolean indicating if the step is required.
+  SurveyStep.multipleChoiceMultiSelect({
+    required this.id,
+    required this.title,
+    this.description,
+    required List<SurveyOption> this.options,
+    this.answer,
+    this.isRequired = false,
+  })  : stepType = SurveyStepType.multipleChoiceMultiSelect,
+        assert(options.length >= 2, 'Multiple choice questions must have at least two options.');
+
+  /// Constructor for creating a yes/no survey step.
+  ///
+  /// Parameters:
+  /// * id: The unique identifier for the step.
+  /// * title: The display title for the step.
+  /// * description: An optional description for the step.
+  /// * options: A list of SurveyOption objects representing the choices.
+  /// * isRequired: A boolean indicating if the step is required.
+  SurveyStep.yesNo({
+    required this.id,
+    required this.title,
+    this.description,
+    List<SurveyOption>? options,
+    this.answer,
+    this.isRequired = false,
+  })  : options = options ?? [SurveyOption(id: 'yes', title: 'Yes'), SurveyOption(id: 'no', title: 'No')],
+        stepType = SurveyStepType.yesNo,
+        assert(options == null || options.length == 2, 'Yes/No questions must have exactly two options.');
+
+        
 }

@@ -11,6 +11,7 @@ class SurveyStepBuilder extends StatelessWidget {
   Widget build(BuildContext context) {
     final surveyProvider = context.watch<SurveyProvider>();
     return PageView.builder(
+      itemCount: surveyProvider.steps.length,
       controller: surveyProvider.stepPageController,
       itemBuilder: (BuildContext context, int index) {
         return SurveyStepWidget(step: surveyProvider.steps[index]);

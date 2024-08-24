@@ -19,27 +19,38 @@ class YesNoWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final surveyProvider = context.watch<SurveyProvider>();
     final selectedOption = step.answer;
+    final options = step.options;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        RadioListTile(
-          title: const Text('Yes'),
-          value: 'yes',
-          groupValue: selectedOption,
-          onChanged: (value) {
-            surveyProvider.updateAnswer(step.id, value);
-          },
-        ),
-        RadioListTile(
-          title: const Text('No'),
-          value: 'no',
-          groupValue: selectedOption,
-          onChanged: (value) {
-            surveyProvider.updateAnswer(step.id, value);
-          },
-        ),
-      ],
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: options!.map((option) {
+        final isSelected = selectedOption == option.id;
+        final backgroundColor = isSelected
+            ? Theme.of(context).colorScheme.primary.withOpacity(.8)
+            : Theme.of(context).colorScheme.onBackground.withOpacity(.08);
+        final textColor = isSelected
+            ? Theme.of(context).colorScheme.onPrimary
+            : Theme.of(context).colorScheme.onBackground;
+        return Card(
+          margin: const EdgeInsets.only(bottom: 10),
+          elevation: 0,
+          color: backgroundColor,
+          child: ListTile(
+            title: Text(
+              option.title,
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                    color: textColor,
+                  ),
+            ),
+            selected: isSelected,
+            onTap: () {
+              surveyProvider.updateAnswer(step.id, option.id);
+            },
+          ),
+        );
+      }).toList(),
     );
   }
 }

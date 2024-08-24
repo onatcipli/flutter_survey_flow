@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/widgets.dart';
 
 /// Model for a survey option, which could be a selectable choice in a survey step.
@@ -8,6 +6,7 @@ class SurveyOption {
   final String title; // Display title for the option
   final String? description; // Optional description for the option
   final IconData? icon; // Optional icon for the option
+  TextAlign? textAlign;
 
   /// Constructor for SurveyOption.
   ///
@@ -21,5 +20,10 @@ class SurveyOption {
     required this.title,
     this.description,
     this.icon,
-  });
+    this.textAlign = TextAlign.start,
+  }) {
+    if (description == null && icon == null) {
+      textAlign = TextAlign.center;
+    }
+  }
 }

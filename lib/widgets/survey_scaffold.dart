@@ -12,25 +12,28 @@ class SurveyScaffold extends StatelessWidget {
     final surveyProvider = context.watch<SurveyProvider>();
     return Scaffold(
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const SurveyHeader(),
-              const Expanded(
-                child: SurveyStepBuilder(),
-              ),
-              FilledButton(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const Padding(
+              padding: EdgeInsets.all(20),
+              child: SurveyHeader(),
+            ),
+            const Expanded(
+              child: SurveyStepBuilder(),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(20),
+              child: FilledButton(
                 onPressed: () {
                   surveyProvider.nextStep();
                 },
                 child: Text(
                   surveyProvider.isLastStep ? "Let's get started" : 'Next',
                 ),
-              )
-            ],
-          ),
+              ),
+            )
+          ],
         ),
       ),
     );

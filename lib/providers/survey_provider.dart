@@ -54,7 +54,12 @@ class SurveyProvider with ChangeNotifier {
   SurveyProvider({
     required this.context,
     required this.steps,
-  });
+  }) {
+    stepPageController.addListener(() {
+      currentStepIndex = stepPageController.page!.round().clamp(0, steps.length - 1);
+      notifyListeners();
+    });
+  }
 
   /// Starts the survey by pushing the SurveyScaffold page onto the navigation stack.
   void startSurvey() {
@@ -85,7 +90,7 @@ class SurveyProvider with ChangeNotifier {
   /// * stepIndex: The index of the step to navigate to.
   void navigateToStep(int stepIndex) {
     if (stepIndex >= 0 && stepIndex < steps.length) {
-      currentStepIndex = stepIndex;
+      // currentStepIndex = stepIndex;
       stepPageController.jumpToPage(stepIndex);
       notifyListeners();
     }
@@ -94,7 +99,7 @@ class SurveyProvider with ChangeNotifier {
   /// Moves to the next step in the survey and completes the survey if it's the last step.
   void nextStep() {
     if (currentStepIndex < steps.length - 1) {
-      currentStepIndex++;
+      // currentStepIndex++;
       _nextPage();
       notifyListeners();
     } else {
@@ -114,7 +119,7 @@ class SurveyProvider with ChangeNotifier {
   /// Moves to the previous step in the survey or cancels the survey if it's the first step.
   void previousStep() {
     if (currentStepIndex > 0) {
-      currentStepIndex--;
+      // currentStepIndex--;
       _previousPage();
       notifyListeners();
     } else {
@@ -124,8 +129,7 @@ class SurveyProvider with ChangeNotifier {
 
   /// Cancels the survey and resets all steps.
   void cancelSurvey() {
-    currentStepIndex = 0;
-    steps = [];
+    // currentStepIndex = 0;
     stepPageController.jumpToPage(0);
     notifyListeners();
     Navigator.of(context).pop();

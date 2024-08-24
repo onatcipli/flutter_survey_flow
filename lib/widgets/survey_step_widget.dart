@@ -19,9 +19,7 @@ class SurveyStepWidget extends StatelessWidget {
     final surveyProvider = context.watch<SurveyProvider>();
     final currentStep = surveyProvider.currentStep;
     return Padding(
-      padding: const EdgeInsets.symmetric(
-        vertical: 20,
-      ),
+      padding: const EdgeInsets.only(left: 20, right: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

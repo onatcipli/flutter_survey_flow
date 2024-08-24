@@ -38,10 +38,10 @@ class _MyHomePageState extends State<MyHomePage> {
     FlutterSurveyFlow.startSurvey(
       context: context,
       steps: [
-        SurveyStep(
+        SurveyStep.multipleChoiceSingleSelect(
           id: '1',
           title: 'What is your name?',
-          stepType: SurveyStepType.multipleChoiceSingleSelect,
+          description: 'Please select an option',
           options: [
             SurveyOption(
               id: '1',
@@ -62,6 +62,31 @@ class _MyHomePageState extends State<MyHomePage> {
               icon: Icons.alarm,
             ),
           ],
+        ),
+        SurveyStep(
+          id: '2',
+          title: 'What is your name?',
+          description: 'Please type your name we will use it to identify you',
+          stepType: SurveyStepType.multipleChoiceSingleSelect,
+          options: [
+            SurveyOption(
+              id: '1',
+              title: 'Option 1',
+            ),
+            SurveyOption(
+              id: '2',
+              title: 'Option 2',
+            ),
+            SurveyOption(
+              id: '3',
+              title: 'Option 3',
+            ),
+          ],
+        ),
+        SurveyStep.yesNo(
+          id: '3',
+          title: 'Do you agree with the terms and conditions?',
+          description: 'Please select Yes or No',
         ),
       ],
     );
