@@ -10,13 +10,16 @@ class SurveyHeader extends StatelessWidget {
     final surveyProvider = context.watch<SurveyProvider>();
     return Row(
       children: [
-        IconButton(
-          onPressed: () {
-            surveyProvider.previousStep();
-          },
-          icon: surveyProvider.isFirstStep
-              ? const Icon(Icons.close)
-              : const Icon(Icons.arrow_back_ios),
+        Padding(
+          padding: const EdgeInsets.only(right: 20),
+          child: IconButton.filled(
+            onPressed: () {
+              surveyProvider.previousStep();
+            },
+            icon: surveyProvider.isFirstStep
+                ? const Icon(Icons.close)
+                : const Icon(Icons.arrow_back_ios),
+          ),
         ),
         Expanded(
           child: LinearProgressIndicator(

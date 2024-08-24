@@ -20,19 +20,25 @@ class SurveyStepWidget extends StatelessWidget {
     final currentStep = surveyProvider.currentStep;
     return Padding(
       padding: const EdgeInsets.symmetric(
-        vertical: 40,
-        horizontal: 80,
+        vertical: 20,
       ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            step.title,
-            style: Theme.of(context).textTheme.titleLarge,
+          Padding(
+            padding: const EdgeInsets.only(bottom: 20),
+            child: Text(
+              step.title,
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
           ),
           if (step.description != null)
-            Text(
-              step.description!,
-              style: Theme.of(context).textTheme.bodyMedium,
+            Padding(
+              padding: const EdgeInsets.only(bottom: 20),
+              child: Text(
+                step.description!,
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
             ),
           Expanded(
             child: Builder(
@@ -41,25 +47,25 @@ class SurveyStepWidget extends StatelessWidget {
                   case SurveyStepType.multipleChoiceSingleSelect:
                     return MultipleChoiceSingleSelectWidget(step: step);
                   case SurveyStepType.multipleChoiceMultiSelect:
-                    // return MultipleChoiceMultiSelectWidget(step: step);
+                  // return MultipleChoiceMultiSelectWidget(step: step);
                   case SurveyStepType.yesNo:
                     return YesNoWidget(step: step);
                   case SurveyStepType.datePicker:
-                    // TODO: Handle this case.
+                  // TODO: Handle this case.
                   case SurveyStepType.timePicker:
-                    // TODO: Handle this case.
+                  // TODO: Handle this case.
                   case SurveyStepType.slider:
-                    // TODO: Handle this case.
+                  // TODO: Handle this case.
                   case SurveyStepType.toggleSwitch:
-                    // TODO: Handle this case.
+                  // TODO: Handle this case.
                   case SurveyStepType.rating:
-                    // TODO: Handle this case.
+                  // TODO: Handle this case.
                   case SurveyStepType.notification:
-                    // TODO: Handle this case.
+                  // TODO: Handle this case.
                   case SurveyStepType.successScreen:
-                    // TODO: Handle this case.
+                  // TODO: Handle this case.
                   case SurveyStepType.custom:
-                    // TODO: Handle this case.
+                  // TODO: Handle this case.
                   default:
                     return Container();
                 }

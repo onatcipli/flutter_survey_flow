@@ -20,18 +20,47 @@ class MultipleChoiceSingleSelectWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final surveyProvider = context.watch<SurveyProvider>();
     final selectedOption = step.answer;
-    
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ...?step.options?.map((option) {
-          return RadioListTile(
-            title: Text(option),
-            value: option,
-            groupValue: selectedOption,
-            onChanged: (value) {
-              surveyProvider.updateAnswer(step.id, value);
-            },
+          final isSelected = selectedOption == option;
+          final backgroundColor = isSelected
+              ? Theme.of(context).colorScheme.primary.withOpacity(.8)
+              : Theme.of(context).colorScheme.onBackground.withOpacity(.08);
+          final textColor = isSelected
+              ? Theme.of(context).colorScheme.onPrimary
+              : Theme.of(context).colorScheme.onBackground;
+          return Card(
+            elevation: 0,
+            color: backgroundColor,
+            child: ListTile(
+              title: Text(
+                option.title,
+                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                      color: textColor,
+                    ),
+              ),
+              subtitle: option.description != null
+                  ? Text(
+                      option.description!,
+                      style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                            color: textColor,
+                          ),
+                    )
+                  : null,
+              leading: option.icon != null
+                  ? Icon(
+                      option.icon,
+                      color: textColor,
+                    )
+                  : null,
+              selected: isSelected,
+              onTap: () {
+                surveyProvider.updateAnswer(step.id, option);
+              },
+            ),
           );
         }).toList(),
       ],

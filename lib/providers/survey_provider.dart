@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../models/survey_step.dart';
+import '../widgets/survey_scaffold.dart';
 
 class SurveyProvider with ChangeNotifier {
   BuildContext context;
@@ -53,6 +55,18 @@ class SurveyProvider with ChangeNotifier {
     required this.context,
     required this.steps,
   });
+
+  /// Starts the survey by pushing the SurveyScaffold page onto the navigation stack.
+  void startSurvey() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => ChangeNotifierProvider.value(
+          value: this,
+          child: const SurveyScaffold(),
+        ),
+      ),
+    );
+  }
 
   /// Updates the answer for a specific survey step.
   ///
