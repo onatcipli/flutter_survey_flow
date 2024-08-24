@@ -25,9 +25,15 @@ class SurveyScaffold extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(20),
               child: FilledButton(
-                onPressed: () {
-                  surveyProvider.nextStep();
-                },
+                onPressed: surveyProvider.isCurrentStepRequired
+                    ? (surveyProvider.isCurrentStepAnswered
+                        ? () {
+                            surveyProvider.nextStep();
+                          }
+                        : null)
+                    : () {
+                        surveyProvider.nextStep();
+                      },
                 child: Text(
                   surveyProvider.isLastStep ? "Let's get started" : 'Next',
                 ),

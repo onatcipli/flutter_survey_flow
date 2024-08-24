@@ -3,13 +3,13 @@ import '../enums/survey_step_type.dart';
 import 'survey_option.dart';
 
 /// Model for a survey step, which could be a question or an informational screen.
-class SurveyStep {
+class SurveyStep<T> {
   final String id;
   final String title;
   final String? description;
   final SurveyStepType stepType;
   List<SurveyOption>? options; // For multiple choice questions
-  dynamic answer; // Generic answer type for storing user input
+  T? answer; // Generic answer type for storing user input
   final bool isRequired;
 
   SurveyStep({
@@ -19,9 +19,10 @@ class SurveyStep {
     required this.stepType,
     this.options,
     this.answer,
-    this.isRequired = false,
+    this.isRequired = true,
   }) : assert(
-          stepType != SurveyStepType.multipleChoiceSingleSelect || (options != null && options.length >= 2),
+          stepType != SurveyStepType.multipleChoiceSingleSelect ||
+              (options != null && options.length >= 2),
           'Multiple choice questions must have at least two options.',
         );
 
@@ -39,9 +40,10 @@ class SurveyStep {
     this.description,
     required List<SurveyOption> this.options,
     this.answer,
-    this.isRequired = false,
+    this.isRequired = true,
   })  : stepType = SurveyStepType.multipleChoiceSingleSelect,
-        assert(options.length >= 2, 'Multiple choice questions must have at least two options.');
+        assert(options.length >= 2,
+            'Multiple choice questions must have at least two options.');
 
   /// Constructor for creating a multiple choice multi select survey step.
   ///
@@ -57,9 +59,10 @@ class SurveyStep {
     this.description,
     required List<SurveyOption> this.options,
     this.answer,
-    this.isRequired = false,
+    this.isRequired = true,
   })  : stepType = SurveyStepType.multipleChoiceMultiSelect,
-        assert(options.length >= 2, 'Multiple choice questions must have at least two options.');
+        assert(options.length >= 2,
+            'Multiple choice questions must have at least two options.');
 
   /// Constructor for creating a yes/no survey step.
   ///
@@ -75,10 +78,13 @@ class SurveyStep {
     this.description,
     List<SurveyOption>? options,
     this.answer,
-    this.isRequired = false,
-  })  : options = options ?? [SurveyOption(id: 'yes', title: 'Yes'), SurveyOption(id: 'no', title: 'No')],
+    this.isRequired = true,
+  })  : options = options ??
+            [
+              SurveyOption(id: 'yes', title: 'Yes'),
+              SurveyOption(id: 'no', title: 'No')
+            ],
         stepType = SurveyStepType.yesNo,
-        assert(options == null || options.length == 2, 'Yes/No questions must have exactly two options.');
-
-        
+        assert(options == null || options.length == 2,
+            'Yes/No questions must have exactly two options.');
 }

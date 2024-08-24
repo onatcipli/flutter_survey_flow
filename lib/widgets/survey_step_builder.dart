@@ -11,6 +11,9 @@ class SurveyStepBuilder extends StatelessWidget {
   Widget build(BuildContext context) {
     final surveyProvider = context.watch<SurveyProvider>();
     return PageView.builder(
+      physics: surveyProvider.configuration.enableSwipeNavigation
+          ? const NeverScrollableScrollPhysics()
+          : const AlwaysScrollableScrollPhysics(),
       itemCount: surveyProvider.steps.length,
       controller: surveyProvider.stepPageController,
       itemBuilder: (BuildContext context, int index) {

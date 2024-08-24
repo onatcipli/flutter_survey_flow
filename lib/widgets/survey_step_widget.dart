@@ -5,6 +5,8 @@ import 'package:flutter_survey_flow/providers/survey_provider.dart';
 import 'package:flutter_survey_flow/widgets/survey_steps/yes_no_widget.dart';
 import 'package:provider/provider.dart';
 
+import '../models/survey_option.dart';
+import 'survey_steps/multiple_choice_multi_select_widget.dart';
 import 'survey_steps/multiple_choice_single_select_widget.dart';
 
 class SurveyStepWidget extends StatelessWidget {
@@ -45,7 +47,12 @@ class SurveyStepWidget extends StatelessWidget {
                   case SurveyStepType.multipleChoiceSingleSelect:
                     return MultipleChoiceSingleSelectWidget(step: step);
                   case SurveyStepType.multipleChoiceMultiSelect:
-                  // return MultipleChoiceMultiSelectWidget(step: step);
+                    if (step is SurveyStep<List<SurveyOption>>) {
+                      return MultipleChoiceMultiSelectWidget(
+                        step: step as SurveyStep<List<SurveyOption>>,
+                      );
+                    }
+                    return Container();
                   case SurveyStepType.yesNo:
                     return YesNoWidget(step: step);
                   case SurveyStepType.datePicker:

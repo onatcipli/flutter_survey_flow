@@ -83,10 +83,39 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ],
         ),
-        SurveyStep.yesNo(
+        SurveyStep<String>.yesNo(
           id: '3',
           title: 'Do you agree with the terms and conditions?',
           description: 'Please select Yes or No',
+        ),
+        SurveyStep<List<SurveyOption>>.multipleChoiceMultiSelect(
+          id: '4',
+          title: 'Select your favorite fruits',
+          description: 'You can select multiple options',
+          options: [
+            SurveyOption(
+              id: '1',
+              title: 'Apple',
+              description: 'A sweet red fruit',
+              icon: Icons.apple,
+            ),
+            SurveyOption(
+              id: '2',
+              title: 'Banana',
+              description: 'A long yellow fruit',
+            ),
+            SurveyOption(
+              id: '3',
+              title: 'Cherry',
+              description: 'A small red fruit',
+            ),
+            SurveyOption(
+              id: '4',
+              title: 'Date',
+              description: 'A sweet brown fruit',
+              icon: Icons.date_range,
+            ),
+          ],
         ),
       ],
     );
