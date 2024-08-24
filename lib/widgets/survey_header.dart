@@ -13,9 +13,11 @@ class SurveyHeader extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(right: 20),
           child: IconButton.filled(
-            onPressed: () {
-              surveyProvider.previousStep();
-            },
+            onPressed: surveyProvider.isCurrentStepLoading
+                ? null
+                : () {
+                    surveyProvider.previousStep();
+                  },
             icon: surveyProvider.isFirstStep
                 ? const Icon(Icons.close)
                 : const Icon(Icons.arrow_back),
@@ -23,6 +25,8 @@ class SurveyHeader extends StatelessWidget {
         ),
         Expanded(
           child: LinearProgressIndicator(
+            borderRadius: BorderRadius.circular(10),
+            minHeight: 8,
             value: surveyProvider.completionPercentage,
           ),
         ),

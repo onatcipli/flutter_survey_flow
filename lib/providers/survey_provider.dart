@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_survey_flow/flutter_survey_flow.dart';
 import 'package:provider/provider.dart';
 
 import '../models/survey_step.dart';
@@ -93,6 +94,9 @@ class SurveyProvider with ChangeNotifier {
     updateStepsListener();
   }
 
+  /// Returns true if the current step is loading.
+  bool get isCurrentStepLoading => currentStep.isLoading;
+
   /// Updates the listener for the step page controller.
   void updateStepsListener() {
     if (configuration.enableSwipeNavigation) {
@@ -146,14 +150,35 @@ class SurveyProvider with ChangeNotifier {
   }
 
   /// Moves to the next step in the survey and completes the survey if it's the last step.
-  void nextStep() {
+  Future<void> nextStep() async {
     if (currentStepIndex < steps.length - 1) {
+      final currentStep = steps[currentStepIndex];
+      await handleStepCallbacks(currentStep);
       currentStepIndex++;
       _nextPage();
       notifyListeners();
     } else {
+      await handleStepCallbacks(currentStep);
       completeSurvey();
     }
+  }
+
+  Future<void> handleNextStepPreparation() async {
+    if (nextStepItem != null &&
+        nextStepItem?.stepType == SurveyStepType.preparation) {
+      nextStep();
+    }
+  }
+
+  Future<void> handleStepCallbacks(SurveyStep<dynamic> currentStep) async {
+    if (currentStep.beforeComplete != null) {
+      currentStep.isLoading = true;
+      notifyListeners();
+      await currentStep.beforeComplete!(currentStep.answer);
+      currentStep.isLoading = false;
+      notifyListeners();
+    }
+    currentStep.onCompleted?.call(currentStep.answer);
   }
 
   /// Completes the survey and returns the steps.

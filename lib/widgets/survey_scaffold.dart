@@ -9,22 +9,48 @@ class SurveyScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final surveyProvider = context.watch<SurveyProvider>();
-    return Scaffold(
+    return const Scaffold(
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const Padding(
+            Padding(
               padding: EdgeInsets.all(20),
               child: SurveyHeader(),
             ),
-            const Expanded(
+            Expanded(
               child: SurveyStepBuilder(),
             ),
-            Padding(
-              padding: const EdgeInsets.all(20),
-              child: FilledButton(
+            SurveyFooter()
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class SurveyFooter extends StatelessWidget {
+  const SurveyFooter({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final surveyProvider = context.watch<SurveyProvider>();
+    return Padding(
+      padding: const EdgeInsets.all(20),
+      child: SizedBox(
+        height: 60,
+        child: surveyProvider.isCurrentStepLoading
+            ? const Center(child: CircularProgressIndicator())
+            : FilledButton(
+                style: ButtonStyle(
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                  ),
+                ),
                 onPressed: surveyProvider.isCurrentStepRequired
                     ? (surveyProvider.isCurrentStepAnswered
                         ? () {
@@ -38,9 +64,6 @@ class SurveyScaffold extends StatelessWidget {
                   surveyProvider.isLastStep ? "Let's get started" : 'Next',
                 ),
               ),
-            )
-          ],
-        ),
       ),
     );
   }

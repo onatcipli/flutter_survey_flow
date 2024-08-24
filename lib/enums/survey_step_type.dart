@@ -27,6 +27,9 @@ enum SurveyStepType {
   /// A notification step to inform the user of important details or instructions.
   notification,
 
+  /// A preparation step to inform the user we are preparing the application for personalization.
+  preparation,
+
   /// A screen to display when the survey or questionnaire is successfully completed.
   successScreen,
 

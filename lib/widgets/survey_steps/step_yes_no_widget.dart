@@ -7,10 +7,10 @@ import '../../providers/survey_provider.dart';
 ///
 /// Attributes:
 /// * step: Used for holding the current survey step data.
-class YesNoWidget extends StatelessWidget {
+class StepYesNoWidget extends StatelessWidget {
   final SurveyStep step;
 
-  const YesNoWidget({
+  const StepYesNoWidget({
     super.key,
     required this.step,
   });

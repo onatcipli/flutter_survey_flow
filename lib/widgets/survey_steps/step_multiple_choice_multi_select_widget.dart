@@ -9,10 +9,10 @@ import '../../providers/survey_provider.dart';
 ///
 /// Attributes:
 /// * step: Used for holding the current survey step data.
-class MultipleChoiceMultiSelectWidget extends StatelessWidget {
+class StepMultipleChoiceMultiSelectWidget extends StatelessWidget {
   final SurveyStep<List<SurveyOption>> step;
 
-  const MultipleChoiceMultiSelectWidget({
+  const StepMultipleChoiceMultiSelectWidget({
     super.key,
     required this.step,
   });

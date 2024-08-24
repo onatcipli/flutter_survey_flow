@@ -3,12 +3,19 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_survey_flow/enums/survey_step_type.dart';
 import 'package:flutter_survey_flow/models/survey_step.dart';
 import 'package:flutter_survey_flow/providers/survey_provider.dart';
-import 'package:flutter_survey_flow/widgets/survey_steps/yes_no_widget.dart';
+import 'package:flutter_survey_flow/widgets/survey_steps/step_yes_no_widget.dart';
 import 'package:provider/provider.dart';
 
 import '../models/survey_option.dart';
-import 'survey_steps/multiple_choice_multi_select_widget.dart';
-import 'survey_steps/multiple_choice_single_select_widget.dart';
+import 'survey_steps/step_multiple_choice_multi_select_widget.dart';
+import 'survey_steps/step_multiple_choice_single_select_widget.dart';
+import 'survey_steps/step_date_picker_widget.dart';
+import 'survey_steps/step_notification_widget.dart';
+import 'survey_steps/step_preparation_widget.dart';
+import 'survey_steps/step_rating_widget.dart';
+import 'survey_steps/step_slider_widget.dart';
+import 'survey_steps/step_time_picker_widget.dart';
+import 'survey_steps/step_toggle_switch_widget.dart';
 
 class SurveyStepWidget extends StatelessWidget {
   final SurveyStep step;
@@ -46,28 +53,51 @@ class SurveyStepWidget extends StatelessWidget {
               builder: (context) {
                 switch (currentStep.stepType) {
                   case SurveyStepType.multipleChoiceSingleSelect:
-                    return MultipleChoiceSingleSelectWidget(step: step);
+                    return StepMultipleChoiceSingleSelectWidget(step: step);
                   case SurveyStepType.multipleChoiceMultiSelect:
                     if (step is SurveyStep<List<SurveyOption>>) {
-                      return MultipleChoiceMultiSelectWidget(
+                      return StepMultipleChoiceMultiSelectWidget(
                         step: step as SurveyStep<List<SurveyOption>>,
                       );
                     }
-                    return Container();
                   case SurveyStepType.yesNo:
-                    return YesNoWidget(step: step);
+                    return StepYesNoWidget(step: step);
                   case SurveyStepType.datePicker:
-                  // TODO: Handle this case.
+                    if (step is SurveyStep<DateTime>) {
+                      return StepDatePickerWidget(
+                          step: step as SurveyStep<DateTime>);
+                    }
                   case SurveyStepType.timePicker:
-                  // TODO: Handle this case.
+                    if (step is SurveyStep<TimeOfDay>) {
+                      return StepTimePickerWidget(
+                          step: step as SurveyStep<TimeOfDay>);
+                    }
                   case SurveyStepType.slider:
-                  // TODO: Handle this case.
+                    if (step is SurveyStep<double>) {
+                      return StepSliderWidget(step: step as SurveyStep<double>);
+                    }
                   case SurveyStepType.toggleSwitch:
-                  // TODO: Handle this case.
+                    if (step is SurveyStep<bool>) {
+                      return StepToggleSwitchWidget(
+                        step: step as SurveyStep<bool>,
+                      );
+                    }
                   case SurveyStepType.rating:
-                  // TODO: Handle this case.
+                    if (step is SurveyStep<int>) {
+                      return StepRatingWidget(
+                        step: step as SurveyStep<int>,
+                      );
+                    }
                   case SurveyStepType.notification:
-                  // TODO: Handle this case.
+                    if (step is SurveyStep<bool>) {
+                      return StepNotificationWidget(
+                        step: step,
+                      );
+                    }
+                  case SurveyStepType.preparation:
+                    return StepPreparationWidget(
+                      step: step,
+                    );
                   case SurveyStepType.successScreen:
                   // TODO: Handle this case.
                   case SurveyStepType.custom:
@@ -75,6 +105,7 @@ class SurveyStepWidget extends StatelessWidget {
                   default:
                     return Container();
                 }
+                return Container();
               },
             ),
           ),

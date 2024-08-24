@@ -62,6 +62,9 @@ class _MyHomePageState extends State<MyHomePage> {
               icon: Icons.alarm,
             ),
           ],
+          beforeComplete: (answer) async {
+            await Future.delayed(const Duration(seconds: 1));
+          },
         ),
         SurveyStep(
           id: '2',
@@ -114,6 +117,67 @@ class _MyHomePageState extends State<MyHomePage> {
               title: 'Date',
               description: 'A sweet brown fruit',
               icon: Icons.date_range,
+            ),
+          ],
+        ),
+        SurveyStep<DateTime>.datePicker(
+          id: '5',
+          title: 'Select your birth date',
+          description: 'Please choose your birth date from the date picker',
+        ),
+        SurveyStep<TimeOfDay>.timePicker(
+          id: '6',
+          title: 'Select your preferred time',
+          description: 'Please choose your preferred time from the time picker',
+        ),
+        SurveyStep<double>.slider(
+          id: '7',
+          title: 'Rate your satisfaction',
+          description: 'Please rate your satisfaction on a scale from 0 to 100',
+          answer: 50.0, // Default value
+        ),
+        SurveyStep<bool>.toggleSwitch(
+          id: '8',
+          title: 'Do you agree with the terms and conditions?',
+          description: 'Please select Yes or No',
+        ),
+        SurveyStep<int>.rating(
+          id: '9',
+          title: 'Rate your satisfaction',
+          description: 'Please rate your satisfaction on a scale from 0 to 100',
+          beforeComplete: (answer) async {
+            await Future.delayed(const Duration(seconds: 1));
+            print('Answer: $answer');
+          },
+        ),
+        SurveyStep<bool>.notification(
+          id: '10',
+          title: "Better sleep starts with better habits",
+        ),
+        SurveyStep.preparation(
+          id: '11',
+          title: '',
+          description: '',
+          beforeComplete: (answer) async {
+            await Future.delayed(const Duration(seconds: 15));
+            print('Answer: $answer');
+          },
+          options: [
+            SurveyOption(
+              id: '1',
+              title: 'Relaxing Rain',
+            ),
+            SurveyOption(
+              id: '2',
+              title: 'Gentle Waves',
+            ),
+            SurveyOption(
+              id: '3',
+              title: 'Forest Ambience',
+            ),
+            SurveyOption(
+              id: '4',
+              title: 'Calm Night',
             ),
           ],
         ),

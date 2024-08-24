@@ -12,6 +12,15 @@ class SurveyStep<T> {
   T? answer; // Generic answer type for storing user input
   final bool isRequired;
 
+  // loading state when beforeComplete is called
+  bool isLoading = false;
+
+  /// Callback before the step is completed, can be used for async operations.
+  final Future<void> Function(dynamic answer)? beforeComplete;
+
+  /// Callback when the step is completed.
+  final void Function(dynamic answer)? onCompleted;
+
   SurveyStep({
     required this.id,
     required this.title,
@@ -20,6 +29,8 @@ class SurveyStep<T> {
     this.options,
     this.answer,
     this.isRequired = true,
+    this.beforeComplete,
+    this.onCompleted,
   }) : assert(
           stepType != SurveyStepType.multipleChoiceSingleSelect ||
               (options != null && options.length >= 2),
@@ -41,6 +52,8 @@ class SurveyStep<T> {
     required List<SurveyOption> this.options,
     this.answer,
     this.isRequired = true,
+    this.beforeComplete,
+    this.onCompleted,
   })  : stepType = SurveyStepType.multipleChoiceSingleSelect,
         assert(options.length >= 2,
             'Multiple choice questions must have at least two options.');
@@ -60,6 +73,8 @@ class SurveyStep<T> {
     required List<SurveyOption> this.options,
     this.answer,
     this.isRequired = true,
+    this.beforeComplete,
+    this.onCompleted,
   })  : stepType = SurveyStepType.multipleChoiceMultiSelect,
         assert(options.length >= 2,
             'Multiple choice questions must have at least two options.');
@@ -79,6 +94,8 @@ class SurveyStep<T> {
     List<SurveyOption>? options,
     this.answer,
     this.isRequired = true,
+    this.beforeComplete,
+    this.onCompleted,
   })  : options = options ??
             [
               SurveyOption(id: 'yes', title: 'Yes'),
@@ -87,4 +104,167 @@ class SurveyStep<T> {
         stepType = SurveyStepType.yesNo,
         assert(options == null || options.length == 2,
             'Yes/No questions must have exactly two options.');
+
+  /// Constructor for creating a date picker survey step.
+  ///
+  /// Parameters:
+  /// * id: The unique identifier for the step.
+  /// * title: The display title for the step.
+  /// * description: An optional description for the step.
+  /// * isRequired: A boolean indicating if the step is required.
+  SurveyStep.datePicker({
+    required this.id,
+    required this.title,
+    this.description,
+    this.answer,
+    this.isRequired = true,
+    this.beforeComplete,
+    this.onCompleted,
+  })  : options = null,
+        stepType = SurveyStepType.datePicker;
+
+  /// Constructor for creating a time picker survey step.
+  ///
+  /// Parameters:
+  /// * id: The unique identifier for the step.
+  /// * title: The display title for the step.
+  /// * description: An optional description for the step.
+  /// * isRequired: A boolean indicating if the step is required.
+  SurveyStep.timePicker({
+    required this.id,
+    required this.title,
+    this.description,
+    this.answer,
+    this.isRequired = true,
+    this.beforeComplete,
+    this.onCompleted,
+  })  : options = null,
+        stepType = SurveyStepType.timePicker;
+
+  /// Constructor for creating a slider survey step.
+  ///
+  /// Parameters:
+  /// * id: The unique identifier for the step.
+  /// * title: The display title for the step.
+  /// * description: An optional description for the step.
+  /// * isRequired: A boolean indicating if the step is required.
+  SurveyStep.slider({
+    required this.id,
+    required this.title,
+    this.description,
+    this.answer,
+    this.isRequired = true,
+    this.beforeComplete,
+    this.onCompleted,
+  })  : options = null,
+        stepType = SurveyStepType.slider;
+
+  /// Constructor for creating a toggle switch survey step.
+  ///
+  /// Parameters:
+  /// * id: The unique identifier for the step.
+  /// * title: The display title for the step.
+  /// * description: An optional description for the step.
+  /// * isRequired: A boolean indicating if the step is required.
+  SurveyStep.toggleSwitch({
+    required this.id,
+    required this.title,
+    this.description,
+    this.answer,
+    this.isRequired = true,
+    this.beforeComplete,
+    this.onCompleted,
+  })  : options = null,
+        stepType = SurveyStepType.toggleSwitch;
+
+  /// Constructor for creating a rating survey step.
+  ///
+  /// Parameters:
+  /// * id: The unique identifier for the step.
+  /// * title: The display title for the step.
+  /// * description: An optional description for the step.
+  /// * isRequired: A boolean indicating if the step is required.
+  SurveyStep.rating({
+    required this.id,
+    required this.title,
+    this.description,
+    this.answer,
+    this.isRequired = true,
+    this.beforeComplete,
+    this.onCompleted,
+  })  : options = null,
+        stepType = SurveyStepType.rating;
+
+  /// Constructor for creating a notification survey step.
+  ///
+  /// Parameters:
+  /// * id: The unique identifier for the step.
+  /// * title: The display title for the step.
+  /// * description: An optional description for the step.
+  /// * isRequired: A boolean indicating if the step is required.
+  SurveyStep.notification({
+    required this.id,
+    required this.title,
+    this.description,
+    this.answer,
+    this.isRequired = true,
+    this.beforeComplete,
+    this.onCompleted,
+  })  : options = null,
+        stepType = SurveyStepType.notification;
+
+  /// Constructor for creating a preparation survey step.
+  ///
+  /// Parameters:
+  /// * id: The unique identifier for the step.
+  /// * title: The display title for the step.
+  /// * description: An optional description for the step.
+  /// * options: A list of SurveyOption objects representing the choices.
+  /// * isRequired: A boolean indicating if the step is required.
+  SurveyStep.preparation({
+    required this.id,
+    required this.title,
+    this.description,
+    this.options,
+    this.answer,
+    this.isRequired = true,
+    this.beforeComplete,
+    this.onCompleted,
+  })  : stepType = SurveyStepType.preparation;
+
+  /// Constructor for creating a success screen survey step.
+  ///
+  /// Parameters:
+  /// * id: The unique identifier for the step.
+  /// * title: The display title for the step.
+  /// * description: An optional description for the step.
+  /// * isRequired: A boolean indicating if the step is required.
+  SurveyStep.successScreen({
+    required this.id,
+    required this.title,
+    this.description,
+    this.answer,
+    this.isRequired = true,
+    this.beforeComplete,
+    this.onCompleted,
+  })  : options = null,
+        stepType = SurveyStepType.successScreen;
+
+  /// Constructor for creating a custom survey step.
+  ///
+  /// Parameters:
+  /// * id: The unique identifier for the step.
+  /// * title: The display title for the step.
+  /// * description: An optional description for the step.
+  /// * isRequired: A boolean indicating if the step is required.
+  SurveyStep.custom({
+    required this.id,
+    required this.title,
+    this.description,
+    this.answer,
+    this.isRequired = true,
+    this.beforeComplete,
+    this.onCompleted,
+  })  : options = null,
+        stepType = SurveyStepType.custom;
 }
