@@ -1,7 +1,8 @@
 name: flutter_survey_flow
 description: "A new Flutter package project."
 version: 0.0.1
-homepage:
+homepage: https://onatcipli.dev
+repository: https://github.com/onatcipli/flutter_survey_flow
 
 environment:
   sdk: '>=3.2.2 <4.0.0'
