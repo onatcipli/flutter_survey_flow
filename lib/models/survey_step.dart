@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 import '../enums/survey_step_type.dart';
 
 import 'survey_option.dart';
@@ -12,8 +14,12 @@ class SurveyStep<T> {
   T? answer; // Generic answer type for storing user input
   final bool isRequired;
 
+  final Widget Function(BuildContext context, SurveyStep<T> step)? customWidget;
+
   // loading state when beforeComplete is called
   bool isLoading = false;
+
+  final Future<void> Function(SurveyStep<T>? step)? onInit;
 
   /// Callback before the step is completed, can be used for async operations.
   final Future<void> Function(dynamic answer)? beforeComplete;
@@ -31,6 +37,8 @@ class SurveyStep<T> {
     this.isRequired = true,
     this.beforeComplete,
     this.onCompleted,
+    this.onInit,
+    this.customWidget,
   }) : assert(
           stepType != SurveyStepType.multipleChoiceSingleSelect ||
               (options != null && options.length >= 2),
@@ -54,6 +62,8 @@ class SurveyStep<T> {
     this.isRequired = true,
     this.beforeComplete,
     this.onCompleted,
+    this.onInit,
+    this.customWidget,
   })  : stepType = SurveyStepType.multipleChoiceSingleSelect,
         assert(options.length >= 2,
             'Multiple choice questions must have at least two options.');
@@ -75,6 +85,8 @@ class SurveyStep<T> {
     this.isRequired = true,
     this.beforeComplete,
     this.onCompleted,
+    this.onInit,
+    this.customWidget,
   })  : stepType = SurveyStepType.multipleChoiceMultiSelect,
         assert(options.length >= 2,
             'Multiple choice questions must have at least two options.');
@@ -96,6 +108,8 @@ class SurveyStep<T> {
     this.isRequired = true,
     this.beforeComplete,
     this.onCompleted,
+    this.onInit,
+    this.customWidget,
   })  : options = options ??
             [
               SurveyOption(id: 'yes', title: 'Yes'),
@@ -120,6 +134,8 @@ class SurveyStep<T> {
     this.isRequired = true,
     this.beforeComplete,
     this.onCompleted,
+    this.onInit,
+    this.customWidget,
   })  : options = null,
         stepType = SurveyStepType.datePicker;
 
@@ -138,6 +154,8 @@ class SurveyStep<T> {
     this.isRequired = true,
     this.beforeComplete,
     this.onCompleted,
+    this.onInit,
+    this.customWidget,
   })  : options = null,
         stepType = SurveyStepType.timePicker;
 
@@ -156,6 +174,8 @@ class SurveyStep<T> {
     this.isRequired = true,
     this.beforeComplete,
     this.onCompleted,
+    this.onInit,
+    this.customWidget,
   })  : options = null,
         stepType = SurveyStepType.slider;
 
@@ -174,6 +194,8 @@ class SurveyStep<T> {
     this.isRequired = true,
     this.beforeComplete,
     this.onCompleted,
+    this.onInit,
+    this.customWidget,
   })  : options = null,
         stepType = SurveyStepType.toggleSwitch;
 
@@ -192,6 +214,8 @@ class SurveyStep<T> {
     this.isRequired = true,
     this.beforeComplete,
     this.onCompleted,
+    this.onInit,
+    this.customWidget,
   })  : options = null,
         stepType = SurveyStepType.rating;
 
@@ -210,6 +234,8 @@ class SurveyStep<T> {
     this.isRequired = true,
     this.beforeComplete,
     this.onCompleted,
+    this.onInit,
+    this.customWidget,
   })  : options = null,
         stepType = SurveyStepType.notification;
 
@@ -230,7 +256,9 @@ class SurveyStep<T> {
     this.isRequired = true,
     this.beforeComplete,
     this.onCompleted,
-  })  : stepType = SurveyStepType.preparation;
+    this.onInit,
+    this.customWidget,
+  }) : stepType = SurveyStepType.preparation;
 
   /// Constructor for creating a success screen survey step.
   ///
@@ -247,6 +275,8 @@ class SurveyStep<T> {
     this.isRequired = true,
     this.beforeComplete,
     this.onCompleted,
+    this.onInit,
+    this.customWidget,
   })  : options = null,
         stepType = SurveyStepType.successScreen;
 
@@ -265,6 +295,8 @@ class SurveyStep<T> {
     this.isRequired = true,
     this.beforeComplete,
     this.onCompleted,
+    this.onInit,
+    this.customWidget,
   })  : options = null,
         stepType = SurveyStepType.custom;
 }

@@ -35,7 +35,8 @@ class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
   void _incrementCounter() {
-    FlutterSurveyFlow.startSurvey(
+    var surveyProvider;
+    surveyProvider = FlutterSurveyFlow.startSurvey(
       context: context,
       steps: [
         SurveyStep.multipleChoiceSingleSelect(
@@ -62,9 +63,6 @@ class _MyHomePageState extends State<MyHomePage> {
               icon: Icons.alarm,
             ),
           ],
-          beforeComplete: (answer) async {
-            await Future.delayed(const Duration(seconds: 1));
-          },
         ),
         SurveyStep(
           id: '2',
@@ -124,11 +122,13 @@ class _MyHomePageState extends State<MyHomePage> {
           id: '5',
           title: 'Select your birth date',
           description: 'Please choose your birth date from the date picker',
+          answer: DateTime.now(),
         ),
         SurveyStep<TimeOfDay>.timePicker(
           id: '6',
           title: 'Select your preferred time',
           description: 'Please choose your preferred time from the time picker',
+          answer: TimeOfDay.now().replacing(minute: 0),
         ),
         SurveyStep<double>.slider(
           id: '7',
@@ -140,11 +140,13 @@ class _MyHomePageState extends State<MyHomePage> {
           id: '8',
           title: 'Do you agree with the terms and conditions?',
           description: 'Please select Yes or No',
+          answer: true,
         ),
         SurveyStep<int>.rating(
           id: '9',
           title: 'Rate your satisfaction',
           description: 'Please rate your satisfaction on a scale from 0 to 100',
+          answer: 5,
           beforeComplete: (answer) async {
             await Future.delayed(const Duration(seconds: 1));
             print('Answer: $answer');
@@ -153,11 +155,17 @@ class _MyHomePageState extends State<MyHomePage> {
         SurveyStep<bool>.notification(
           id: '10',
           title: "Better sleep starts with better habits",
+          answer: true,
         ),
         SurveyStep.preparation(
           id: '11',
           title: '',
           description: '',
+          answer: true,
+          onInit: (surveyStep) async {
+            print('preparation: $surveyStep');
+            // surveyProvider.nextStep();
+          },
           beforeComplete: (answer) async {
             await Future.delayed(const Duration(seconds: 15));
             print('Answer: $answer');
@@ -180,6 +188,12 @@ class _MyHomePageState extends State<MyHomePage> {
               title: 'Calm Night',
             ),
           ],
+        ),
+        SurveyStep(
+          id: '12',
+          title: 'Congrats We customize the application according to your preferences',
+          stepType: SurveyStepType.successScreen,
+          answer: true,
         ),
       ],
     );

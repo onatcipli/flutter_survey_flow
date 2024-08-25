@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_survey_flow/flutter_survey_flow.dart';
 import 'package:provider/provider.dart';
 
-import '../models/survey_step.dart';
-import '../widgets/survey_scaffold.dart';
 
 class SurveyConfiguration {
   /// If true, the survey will automatically pass to the next step when the current step is answered.
@@ -68,6 +66,9 @@ class SurveyProvider with ChangeNotifier {
   /// Returns:
   /// * A boolean value indicating if the current step is required.
   bool get isCurrentStepRequired {
+    if (currentStep.stepType == SurveyStepType.preparation) {
+      return false;
+    }
     return currentStep.isRequired;
   }
 
@@ -120,6 +121,7 @@ class SurveyProvider with ChangeNotifier {
         ),
       ),
     );
+    currentStep.onInit?.call(currentStep);
   }
 
   /// Updates the answer for a specific survey step.
@@ -152,20 +154,18 @@ class SurveyProvider with ChangeNotifier {
   /// Moves to the next step in the survey and completes the survey if it's the last step.
   Future<void> nextStep() async {
     if (currentStepIndex < steps.length - 1) {
-      final currentStep = steps[currentStepIndex];
+      // final currentStep = steps[currentStepIndex];
       await handleStepCallbacks(currentStep);
       currentStepIndex++;
-      _nextPage();
+      await _nextPage();
       notifyListeners();
     } else {
       await handleStepCallbacks(currentStep);
       completeSurvey();
     }
-  }
 
-  Future<void> handleNextStepPreparation() async {
-    if (nextStepItem != null &&
-        nextStepItem?.stepType == SurveyStepType.preparation) {
+    currentStep.onInit?.call(currentStep);
+    if (currentStep.stepType == SurveyStepType.preparation) {
       nextStep();
     }
   }
@@ -191,10 +191,10 @@ class SurveyProvider with ChangeNotifier {
   }
 
   /// Moves to the previous step in the survey or cancels the survey if it's the first step.
-  void previousStep() {
+  Future<void> previousStep() async {
     if (currentStepIndex > 0) {
       currentStepIndex--;
-      _previousPage();
+      await _previousPage();
       notifyListeners();
     } else {
       cancelSurvey();
@@ -210,16 +210,16 @@ class SurveyProvider with ChangeNotifier {
   }
 
   /// Moves the PageView to the next page.
-  void _nextPage() {
-    stepPageController.nextPage(
+  Future<void> _nextPage() async {
+    await stepPageController.nextPage(
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeInOut,
     );
   }
 
   /// Moves the PageView to the previous page.
-  void _previousPage() {
-    stepPageController.previousPage(
+  Future<void> _previousPage() async {
+    await stepPageController.previousPage(
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeInOut,
     );

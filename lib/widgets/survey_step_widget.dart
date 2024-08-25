@@ -7,6 +7,7 @@ import 'package:flutter_survey_flow/widgets/survey_steps/step_yes_no_widget.dart
 import 'package:provider/provider.dart';
 
 import '../models/survey_option.dart';
+import 'survey_steps/step_custom_widget.dart';
 import 'survey_steps/step_multiple_choice_multi_select_widget.dart';
 import 'survey_steps/step_multiple_choice_single_select_widget.dart';
 import 'survey_steps/step_date_picker_widget.dart';
@@ -14,6 +15,7 @@ import 'survey_steps/step_notification_widget.dart';
 import 'survey_steps/step_preparation_widget.dart';
 import 'survey_steps/step_rating_widget.dart';
 import 'survey_steps/step_slider_widget.dart';
+import 'survey_steps/step_success_widget.dart';
 import 'survey_steps/step_time_picker_widget.dart';
 import 'survey_steps/step_toggle_switch_widget.dart';
 
@@ -99,9 +101,9 @@ class SurveyStepWidget extends StatelessWidget {
                       step: step,
                     );
                   case SurveyStepType.successScreen:
-                  // TODO: Handle this case.
+                    return StepSuccessWidget(step: step);
                   case SurveyStepType.custom:
-                  // TODO: Handle this case.
+                    return StepCustomWidget(step: step);
                   default:
                     return Container();
                 }
